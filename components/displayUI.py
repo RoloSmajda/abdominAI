@@ -48,7 +48,8 @@ def displayUI():
                         if mask_path is not None:
                             setMaskUploaded(mask_path)
 
-            st.session_state.history = getHistory()
+                st.session_state.history = getHistory()
+                
             submit = st.button(st.session_state.locales["menu"]["submit"], use_container_width=True)
 
             if (submit and (ct_file is None or (mask_file is None and not st.session_state.onlyCT))) or (st.session_state.onlyCT and submit and ct_file is None):
