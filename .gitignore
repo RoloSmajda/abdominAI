@@ -1,0 +1,10 @@
+data/
+model/
+# Ignore any pycache folders
+__pycache__/
+
+# Ignore any .pyc files
+*.pyc
+
+# Ignore all __pycache__ directories and their contents
+**/__pycache__/
