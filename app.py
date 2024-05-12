@@ -2,7 +2,6 @@ import streamlit as st
 from components.home import home
 from components.about import about
 from components.displayUI import displayUI
-from components.segmentUI import segmentUI
 from components.historyItem import historyItem
 from datetime import datetime
 from utils import *
@@ -41,8 +40,6 @@ def main():
     if 'history' not in st.session_state:  
         st.session_state.history = getHistory()
 
-    if 'model' not in st.session_state:
-        st.session_state.model = None
 
     if 'onlyCT' not in st.session_state:
         st.session_state.onlyCT = False
@@ -56,8 +53,7 @@ def main():
         with col2:
             about_button = st.button(st.session_state.locales["menu"]["about"], use_container_width=True)
         displayButton = st.button(f':mag: {st.session_state.locales["menu"]["visualize"]}', use_container_width=True)
-        segButton = st.button(f':gear: {st.session_state.locales["menu"]["segment"]}', use_container_width=True)
-
+        
         if len(st.session_state.history) > 0:
             st.subheader(st.session_state.locales["menu"]["latest"])
             for (key, item) in enumerate(st.session_state.history):
@@ -68,9 +64,7 @@ def main():
     if about_button:
         st.session_state.current_page = 'about'
 
-    if segButton:
-        setSegmentPathNone()
-        st.session_state.current_page = 'segmentation'
+
     if displayButton:
         setPreviewPathsNone()
         st.session_state.current_page = 'display'
@@ -106,8 +100,6 @@ def main():
         home()
     if st.session_state.current_page == 'about':
         about()
-    if st.session_state.current_page == 'segmentation':
-        segmentUI()
     if st.session_state.current_page == 'display':
         displayUI()
 
