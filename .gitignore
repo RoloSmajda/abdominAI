@@ -1,4 +1,4 @@
-data/*
+# data/*
 model/
 # Ignore any pycache folders
 __pycache__/

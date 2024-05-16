@@ -1,34 +1,28 @@
-# Use the official Python 3.9 image as the base
+# Use the official Python image from the Docker Hub
 FROM python:3.9-slim
 
-#FROM nvidia/cuda:12.2.0-base-ubuntu20.04
-
-#FROM pytorch/pytorch:2.2.1-cuda12.1-cudnn8-runtime
-
-# Set the environment variable
-#ENV DEBIAN_FRONTEND=noninteractive
-
-# Install the necessary libraries
-# RUN apt-get update && apt-get install -y \
-#     libx11-6 \
-#     libgl1-mesa-glx \
-#     libxrender1 \
-#     python3.9 \
-#     python3-pip
-
-# Set the working directory inside the container
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy your Streamlit app files into the container
-COPY . .
-# Copy streamlit config
-COPY config.toml /root/.streamlit/config.toml
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libx11-6 \
+    libgl1-mesa-glx \
+    libxrender1 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies from requirements.txt
-RUN pip3 install -r requirements.txt
+# Copy the requirements file into the container at /app
+COPY requirements.txt /app/
+COPY /.streamlit/config.toml /root/.streamlit/config.toml
 
+# Install the dependencies specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code into the container at /app
+COPY . /app
+
+# Expose the port that Streamlit will run on
 EXPOSE 8501
 
-# Specify the entry point for your Streamlit app
-#ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
-CMD ["streamlit", "run", "app.py"]
+# Command to run the Streamlit app
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
